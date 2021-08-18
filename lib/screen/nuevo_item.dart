@@ -20,6 +20,7 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
 
   final _formKey = GlobalKey<FormState>();
   final db = new DataBase();
+
   final _codigoController = new TextEditingController();
   final _descripcionController = new TextEditingController();
   final _precioController = new TextEditingController();
