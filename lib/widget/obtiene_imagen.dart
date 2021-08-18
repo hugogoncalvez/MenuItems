@@ -8,15 +8,11 @@ obtieneImagen(String? imagen) {
       image: AssetImage('assets/no-image.png'),
     );
   }
-  return Image.file(
-    File(imagen),
-    fit: BoxFit.cover,
+  return Hero(
+    tag: '$imagen',
+    child: Image.file(
+      File(imagen),
+      fit: BoxFit.cover,
+    ),
   );
 }
-
-BoxDecoration buildBoxDecoration() => BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        color: Colors.black,
-        boxShadow: [
-          BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 5))
-        ]);

@@ -101,15 +101,15 @@ class _Dismissible extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Confirma"),
-              content: const Text("Está seguro que desea eliminar el plato?"),
+              title: Text("Confirma"),
+              content: Text("Está seguro que desea eliminar el plato?"),
               actions: <Widget>[
                 TextButton(
                     onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text("BORRAR")),
+                    child: Text("ELIMINAR")),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text("CANCELAR"),
+                  child: Text("CANCELAR"),
                 ),
               ],
             );

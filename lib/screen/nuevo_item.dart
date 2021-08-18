@@ -14,8 +14,9 @@ class NuevoItemPage extends StatefulWidget {
 }
 
 class _NuevoItemPageState extends State<NuevoItemPage> {
-  String? imagen;
+  String imagenPath = '';
   bool modificando = false;
+  String tituloAppBar = '';
 
   final _formKey = GlobalKey<FormState>();
   final db = new DataBase();
@@ -27,21 +28,25 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> datos =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(datos['codigo'].length);
+
     if (datos['codigo'].length > 0) {
       _codigoController.text = datos['codigo'];
       _descripcionController.text = datos['descripcion'];
       _precioController.text = datos['precio'].toString();
       if (datos['imagen'].length > 0) {
-        imagen = datos['imagen'];
+        imagenPath = datos['imagen'];
       }
       modificando = datos['modificando'];
     }
 
+    (modificando)
+        ? tituloAppBar = 'Modificando Plato'
+        : tituloAppBar = 'Nuevo Plato';
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(73, 144, 171, 1),
-        title: Text('Nuevo Plato'),
+        title: Text(tituloAppBar),
         actions: [
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
@@ -63,12 +68,12 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
               child: Container(
                 width: double.infinity,
                 height: 350,
-                decoration: buildBoxDecoration(),
+                decoration: _buildBoxDecoration(),
                 child: Opacity(
                   opacity: 0.8,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    child: obtieneImagen(imagen),
+                    child: obtieneImagen(imagenPath),
                   ),
                 ),
               ),
@@ -95,14 +100,27 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
           ],
         ),
       ),
-      floatingActionButton: _FloatingActionButton(
-          formKey: _formKey,
-          codigoController: _codigoController,
-          descripcionController: _descripcionController,
-          precioController: _precioController,
-          modificando: modificando,
-          imagen: imagen,
-          db: db),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromRGBO(31, 107, 38, 1),
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              final nuevoItem = MenuModelo(
+                  codigo: _codigoController.text,
+                  descripcion: _descripcionController.text,
+                  precio: double.parse(_precioController.text),
+                  imagen: imagenPath);
+              if (!modificando) {
+                db.nuevoDato(nuevoItem);
+                MenuStream.obtieneItemsMenu();
+                Navigator.pop(context);
+              } else {
+                db.update(nuevoItem);
+                MenuStream.obtieneItemsMenu();
+                Navigator.pop(context);
+              }
+            }
+          },
+          child: Icon(Icons.save)),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -140,7 +158,7 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     this.setState(() {
-      imagen = image!.path;
+      imagenPath = image!.path;
     });
 
     Navigator.of(context).pop();
@@ -150,61 +168,19 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
     this.setState(() {
-      imagen = image!.path;
+      imagenPath = image!.path;
     });
 
     Navigator.of(context).pop();
   }
-}
 
-class _FloatingActionButton extends StatelessWidget {
-  const _FloatingActionButton({
-    Key? key,
-    required GlobalKey<FormState> formKey,
-    required TextEditingController codigoController,
-    required TextEditingController descripcionController,
-    required TextEditingController precioController,
-    required this.modificando,
-    required this.db,
-    this.imagen,
-  })  : _formKey = formKey,
-        _codigoController = codigoController,
-        _descripcionController = descripcionController,
-        _precioController = precioController,
-        super(key: key);
-
-  final GlobalKey<FormState> _formKey;
-  final TextEditingController _codigoController;
-  final TextEditingController _descripcionController;
-  final TextEditingController _precioController;
-  final bool modificando;
-  final DataBase db;
-  final String? imagen;
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: Color.fromRGBO(31, 107, 38, 1),
-      onPressed: () async {
-        if (_formKey.currentState!.validate()) {
-          final nuevoItem = MenuModelo(
-              codigo: _codigoController.text,
-              descripcion: _descripcionController.text,
-              precio: double.parse(_precioController.text),
-              imagen: imagen);
-          if (!modificando) {
-            db.nuevoDato(nuevoItem);
-            MenuStream.obtieneItemsMenu();
-            Navigator.pop(context);
-          } else {
-            db.update(nuevoItem);
-            MenuStream.obtieneItemsMenu();
-            Navigator.pop(context);
-          }
-        }
-      },
-      child: Icon(Icons.save),
-    );
-  }
+  BoxDecoration _buildBoxDecoration() => BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: Colors.black,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black26, blurRadius: 10, offset: Offset(0, 5))
+          ]);
 }
 
 class _TextForms extends StatelessWidget {

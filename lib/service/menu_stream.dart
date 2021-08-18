@@ -21,7 +21,7 @@ class MenuStream extends ChangeNotifier {
     _streamController.add(lista);
   }
 
-  static obtieneItemsMenuPorId(String codigo) async {
+  static void obtieneItemsMenuPorId(String codigo) async {
     final db = new DataBase();
     final lista = await db.getDatosByID(codigo);
     _streamController.add(lista);
