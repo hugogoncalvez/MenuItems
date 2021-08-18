@@ -116,7 +116,6 @@ class DataBase {
     return res;
   }
 
-  //
   Future<int> update(MenuModelo nuevoItem) async {
     final db = await database;
 
