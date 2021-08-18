@@ -110,9 +110,6 @@ class _LoginForm extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: () async {
-                final nuevoUsu = UsuariosModelo(
-                    usuario: _usuarioController.text,
-                    passWord: _passController.text);
                 final respuesta = await db.getUsuario(
                     usuario: _usuarioController.text,
                     password: _passController.text);

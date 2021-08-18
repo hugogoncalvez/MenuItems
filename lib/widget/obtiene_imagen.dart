@@ -12,7 +12,9 @@ obtieneImagen(String? imagen) {
     tag: '$imagen',
     child: Image.file(
       File(imagen),
-      fit: BoxFit.cover,
+      fit: BoxFit.fill,
+      width: 70,
+      height: 70,
     ),
   );
 }
