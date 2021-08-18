@@ -21,7 +21,10 @@ class HomePage extends StatelessWidget {
               Navigator.pushNamed(context, 'login');
             }),
             icon: Icon(Icons.logout),
-            label: Text('Cerrar Sesión'),
+            label: Container(
+              width: 50,
+              child: Text('Cerrar Sesión'),
+            ),
           )
         ],
       ),
