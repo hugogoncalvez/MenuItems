@@ -119,14 +119,22 @@ class _Dismissible extends StatelessWidget {
       background: Container(
         padding: EdgeInsets.only(left: 20),
         alignment: Alignment.centerLeft,
-        color: Colors.red,
-        child: Icon(Icons.delete_forever),
+        color: Colors.black45,
+        child: Image(
+          width: 60,
+          height: 60,
+          image: AssetImage('assets/delete.gif'),
+        ), //Icon(Icons.delete_forever),
       ),
       secondaryBackground: Container(
         padding: EdgeInsets.only(right: 20),
         alignment: Alignment.centerRight,
-        color: Colors.red,
-        child: Icon(Icons.delete_forever),
+        color: Colors.black45,
+        child: Image(
+          width: 60,
+          height: 60,
+          image: AssetImage('assets/delete.gif'),
+        ),
       ),
       key: UniqueKey(),
       onDismissed: (direction) {
