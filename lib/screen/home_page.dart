@@ -18,7 +18,8 @@ class HomePage extends StatelessWidget {
               primary: Color.fromRGBO(73, 144, 171, 1),
             ),
             onPressed: (() async {
-              Navigator.pushNamed(context, 'login');
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'login', (route) => false);
             }),
             icon: Icon(Icons.logout),
             label: Container(
@@ -154,13 +155,13 @@ class _Dismissible extends StatelessWidget {
                   title: Text(
                     lista[index].descripcion,
                     style:
-                        TextStyle(fontWeight: FontWeight.w400, fontSize: 20.0),
+                        TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0),
                   ),
                   subtitle: Text(lista[index].codigo),
                 ),
               ),
               LimitedBox(
-                maxWidth: 100,
+                maxWidth: 115,
                 child: ListTile(
                   title: Text(
                     '\$ ${lista[index].precio}',

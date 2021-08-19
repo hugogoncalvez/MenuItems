@@ -68,7 +68,7 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: double.infinity,
-                height: 350,
+                height: 260,
                 decoration: _buildBoxDecoration(),
                 child: Opacity(
                   opacity: 0.8,
@@ -204,7 +204,7 @@ class _TextForms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 20),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
