@@ -34,7 +34,7 @@ class DataBase {
         'CREATE TABLE platos (id INTEGER PRIMARY KEY, codigo TEXT, descripcion TEXT, precio REAL, imagen TEXT)';
     String tabla2 =
         'CREATE TABLE usuarios (id INTEGER PRIMARY KEY, usuario TEXT, password TEXT)';
-    List query = [tabla1, tabla2];
+    List<String> query = [tabla1, tabla2];
 
     //
     return await openDatabase(path, version: 2, onOpen: (db) {},
@@ -106,9 +106,7 @@ class DataBase {
   Future<int> nuevoDato(MenuModelo nuevoItem) async {
     final db = await database;
     //
-    int res = 0;
-
-    res = await db.insert(
+    final int res = await db.insert(
       'platos',
       nuevoItem.toJson(),
     );
@@ -126,7 +124,7 @@ class DataBase {
     return res;
   }
 
-  Future getDatosByID(String codigo) async {
+  Future<List<MenuModelo>> getDatosByID(String codigo) async {
     final db = await database;
     //
     final res =

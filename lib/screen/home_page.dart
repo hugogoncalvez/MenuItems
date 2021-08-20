@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:menu/models/modelos.dart';
+import 'package:menu/preferencias/pref_usuario.dart';
 import 'package:menu/service/menu_stream.dart';
+
 import 'package:menu/widget/obtiene_imagen.dart';
 
 class HomePage extends StatelessWidget {
+  final preferencias = PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
-    MenuStream.obtieneItemsMenu();
+    MenuStream.obtieneItemsMenu(); // cargo la lista de platos
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Platos del Menú'),
@@ -18,8 +22,9 @@ class HomePage extends StatelessWidget {
               primary: Color.fromRGBO(73, 144, 171, 1),
             ),
             onPressed: (() async {
+              preferencias.setNombreUsuario = '';
               Navigator.pushNamedAndRemoveUntil(
-                  context, 'login', (route) => false);
+                  context, 'inicio', (route) => false);
             }),
             icon: Icon(Icons.logout),
             label: Container(
@@ -120,26 +125,8 @@ class _Dismissible extends StatelessWidget {
           },
         );
       },
-      background: Container(
-        padding: EdgeInsets.only(left: 20),
-        alignment: Alignment.centerLeft,
-        color: Colors.black45,
-        child: Image(
-          width: 60,
-          height: 60,
-          image: AssetImage('assets/delete.gif'),
-        ), //Icon(Icons.delete_forever),
-      ),
-      secondaryBackground: Container(
-        padding: EdgeInsets.only(right: 20),
-        alignment: Alignment.centerRight,
-        color: Colors.black45,
-        child: Image(
-          width: 60,
-          height: 60,
-          image: AssetImage('assets/delete.gif'),
-        ),
-      ),
+      background: containerBorrar(Alignment.centerLeft),
+      secondaryBackground: containerBorrar(Alignment.centerRight),
       key: UniqueKey(),
       onDismissed: (direction) {
         MenuStream.borrarItemMenuPorId(lista[index].codigo);
@@ -174,6 +161,20 @@ class _Dismissible extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Container containerBorrar(AlignmentGeometry pos) {
+    AlignmentGeometry posicion = pos;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      alignment: posicion,
+      color: Colors.black45,
+      child: Image(
+        width: 60,
+        height: 60,
+        image: AssetImage('assets/delete.gif'),
+      ), //Icon(Icons.delete_forever),
     );
   }
 }

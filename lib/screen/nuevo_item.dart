@@ -16,6 +16,7 @@ class NuevoItemPage extends StatefulWidget {
 class _NuevoItemPageState extends State<NuevoItemPage> {
   String imagenPath = '';
   bool modificando = false;
+  bool modifImagen = false;
   String tituloAppBar = '';
 
   final _formKey = GlobalKey<FormState>();
@@ -24,17 +25,17 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
   final _codigoController = new TextEditingController();
   final _descripcionController = new TextEditingController();
   final _precioController = new TextEditingController();
-
+  bool sizeFull = false;
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> datos =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    if (datos['codigo'].length > 0) {
+    if (datos.isNotEmpty) {
       _codigoController.text = datos['codigo'];
       _descripcionController.text = datos['descripcion'];
       _precioController.text = datos['precio'].toString();
-      if (datos['imagen'].length > 0) {
+      if (datos['imagen'].length > 0 && !modifImagen) {
         imagenPath = datos['imagen'];
       }
       modificando = datos['modificando'];
@@ -47,17 +48,20 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(73, 144, 171, 1),
-        title: Text(tituloAppBar),
+        title: Text(tituloAppBar, style: TextStyle(fontSize: 17)),
         actions: [
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               primary: Color.fromRGBO(73, 144, 171, 1),
             ),
             onPressed: (() async {
+              (modificando) ? modifImagen = true : modifImagen = false;
               _seleccionarImgen(context);
             }),
             icon: Icon(Icons.camera_alt),
-            label: Text('Imagen'),
+            label: Text(
+              'Imagen',
+            ),
           )
         ],
       ),
@@ -66,15 +70,23 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: double.infinity,
-                height: 260,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 600),
+                width: sizeFull ? 380 : 100.0,
+                height: sizeFull ? 260 : 100,
                 decoration: _buildBoxDecoration(),
                 child: Opacity(
                   opacity: 0.8,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    child: obtieneImagen(imagenPath),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        sizeFull = !sizeFull;
+                      });
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      child: obtieneImagen(imagenPath),
+                    ),
                   ),
                 ),
               ),
@@ -167,7 +179,8 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
 
   void _openCamera(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    final XFile? image =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 60);
     this.setState(() {
       imagenPath = image!.path;
     });

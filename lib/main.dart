@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+
+import 'package:menu/preferencias/pref_usuario.dart';
 import 'package:menu/screen/home_page.dart';
+import 'package:menu/screen/inicio_App.dart';
 import 'package:menu/screen/login_screens.dart';
 import 'package:menu/screen/nuevo_item.dart';
 import 'package:menu/screen/register_screens.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final preferencias = PreferenciasUsuario();
+  await preferencias.initPrefencias();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -12,12 +20,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: 'login',
+      initialRoute: 'inicio',
       routes: {
         'login': (_) => LoginScreen(),
         'home': (_) => HomePage(),
         'register': (_) => RegisterScreen(),
-        'nuevoItem': (_) => NuevoItemPage()
+        'nuevoItem': (_) => NuevoItemPage(),
+        'inicio': (_) => InicioPage()
       },
     );
   }

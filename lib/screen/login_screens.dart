@@ -1,10 +1,8 @@
+import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:menu/data/database.dart';
-import 'package:menu/models/modelos.dart';
-import 'package:menu/service/menu_stream.dart';
-
+import 'package:menu/preferencias/pref_usuario.dart';
 import 'package:menu/widget/card_container.dart';
 import 'package:menu/widget/input_decorations.dart';
 import 'package:menu/widget/auth_background.dart';
@@ -60,6 +58,7 @@ class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = new DataBase();
+    final preferencias = PreferenciasUsuario();
     final _usuarioController = new TextEditingController();
     final _passController = new TextEditingController();
 
@@ -113,6 +112,8 @@ class _LoginForm extends StatelessWidget {
                 final respuesta = await db.getUsuario(
                     usuario: _usuarioController.text,
                     password: _passController.text);
+
+                preferencias.setNombreUsuario = _usuarioController.text;
 
                 if (respuesta.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(

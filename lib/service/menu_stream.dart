@@ -13,7 +13,8 @@ class MenuStream extends ChangeNotifier {
     _streamController.close();
   }
 
-  static Stream get streamControllerDatos => _streamController.stream;
+  static Stream<List<MenuModelo>> get streamControllerDatos =>
+      _streamController.stream;
 
   static void obtieneItemsMenu() async {
     final db = new DataBase();
