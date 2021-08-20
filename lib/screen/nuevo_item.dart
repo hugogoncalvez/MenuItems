@@ -72,6 +72,7 @@ class _NuevoItemPageState extends State<NuevoItemPage> {
               padding: const EdgeInsets.all(8.0),
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 600),
+                curve: Curves.elasticInOut,
                 width: sizeFull ? 380 : 100.0,
                 height: sizeFull ? 260 : 100,
                 decoration: _buildBoxDecoration(),
